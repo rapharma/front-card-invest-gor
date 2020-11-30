@@ -8,11 +8,10 @@ import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 import { InvestmentsTableComponent } from './investments-table/investments-table.component';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { InvestmentFormComponent } from './investment-form/investment-form.component';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TextMaskModule } from 'angular2-text-mask';
-import { ProductsService } from './services/products.service';
+import { InvestmentsService } from './services/products.service';
 import { ShareDataService } from './services/share-data.service.spec';
 import { HelperService } from './services/helper.service';
 import { AppNavComponent } from './app-nav/app-nav.component';
@@ -25,7 +24,6 @@ import { AppRoutingModule } from './app-routing.module';
     InvestmentsTableComponent,
     NotFoundComponent,
     InvestmentFormComponent,
-    ProductDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +33,7 @@ import { AppRoutingModule } from './app-routing.module';
     CurrencyMaskModule,
     TextMaskModule
   ],
-  providers: [ProductsService, ShareDataService, HelperService],
+  providers: [InvestmentsService, ShareDataService, HelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
