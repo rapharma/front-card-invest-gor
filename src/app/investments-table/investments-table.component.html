@@ -1,0 +1,38 @@
+<app-investment-form (inserted)="listInvestments()">
+</app-investment-form>
+
+<div class="investments-table" *ngIf="showTable">
+    <h3>Your investments</h3>
+    <hr>
+
+<span class="error-message" *ngIf="tableMessageError.length > 0">{{tableMessageError}}</span>
+
+<table class="table table-bordered sortable" *ngIf="tableMessageError.length == 0">
+      <thead>
+    <tr>
+      <th class="text-center">Type</th>
+      <th class="text-center">Value</th>
+      <th class="text-center">Date</th>
+      <th class="no-sort text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products.reverse()" >
+      <td>{{product.type}}</td>
+      <td class="text-right">{{product.value  | number : '1.2-2' }}</td>
+      <td class="text-center">{{product.date }}</td>
+      <td class="actions">
+        <div class="btn-group btn-group-sm">
+          <button id="edit" name="edit" type="button" (click)="itemFormSelected(product)" class="btn btn-primary">
+            <span class="glyphicon glyphicon-edit"></span>
+          </button>
+           <button id="save" name="save" type="button" (click)="onDelete(product._id)" class="btn btn-warning ml-1">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <span class="error-message" *ngIf="products.length == 0">{{noDataMessage}}</span>
+  </tbody>
+  </table>
+</div>
