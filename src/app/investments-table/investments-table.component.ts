@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import { Investment } from '../models/product';
-import { ProductsService } from '../services/products.service';
+import { InvestmentsService } from '../services/investments.service';
 import { } from '../common/app-error';
 import * as moment from 'moment';
 import { ShareDataService } from '../services/share-data.service.spec';
@@ -23,7 +23,7 @@ export class InvestmentsTableComponent implements OnInit {
   showTable: boolean;
   noDataMessage: string;
 
-  constructor(private service: ProductsService,
+  constructor(private service: InvestmentsService,
     private shareData: ShareDataService,
     private helperService: HelperService,
     private router: Router

@@ -10,13 +10,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpModule } from '@angular/http';
 
 import { InvestmentsTableComponent } from './investments-table.component';
-import { ProductsService } from '../services/products.service';
+import { InvestmentsService } from '../services/investments.service';
 import { Investment } from '../models/product';
 
 xdescribe('InvestmentsTableComponent (async)', () => {
   let fixture: ComponentFixture<InvestmentsTableComponent>;
   let component: InvestmentsTableComponent;
-  let service: ProductsService;
+  let service: InvestmentsService;
   let testProducts: Investment[];
 
   beforeEach(() => {
@@ -47,12 +47,12 @@ xdescribe('InvestmentsTableComponent (async)', () => {
     TestBed.configureTestingModule({
       declarations: [InvestmentsTableComponent],
       imports: [RouterTestingModule, HttpModule],
-      providers: [ProductsService]
+      providers: [InvestmentsService]
     });
 
     fixture = TestBed.createComponent(InvestmentsTableComponent);
     component = fixture.componentInstance;
-    service = TestBed.get(ProductsService);
+    service = TestBed.get(InvestmentsService);
   });
 
   it('should set products property with the items returned from the server (Observable)', () => {

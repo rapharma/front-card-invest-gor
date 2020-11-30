@@ -11,7 +11,7 @@ import { InvestmentsTableComponent } from './investments-table/investments-table
 import { InvestmentFormComponent } from './investment-form/investment-form.component';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TextMaskModule } from 'angular2-text-mask';
-import { InvestmentsService } from './services/products.service';
+import { InvestmentsService } from './services/investments.service';
 import { ShareDataService } from './services/share-data.service.spec';
 import { HelperService } from './services/helper.service';
 import { AppNavComponent } from './app-nav/app-nav.component';

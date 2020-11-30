@@ -6,25 +6,25 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
 import { InvestmentFormComponent } from './investment-form.component';
-import { ProductsService } from '../services/products.service';
+import { InvestmentsService } from '../services/investments.service';
 
 xdescribe('InvestmentFormComponent', () => {
   let fixture: ComponentFixture<InvestmentFormComponent>;
   let component: InvestmentFormComponent;
-  let service: ProductsService;
+  let service: InvestmentsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [InvestmentFormComponent],
       imports: [FormsModule, HttpModule, RouterTestingModule],
-      providers: [ProductsService]
+      providers: [InvestmentsService]
     });
 
     fixture = TestBed.createComponent(InvestmentFormComponent);
     component = fixture.componentInstance;
 
     // Get service instance if registered with providers array of module
-    service = TestBed.get(ProductsService);
+    service = TestBed.get(InvestmentsService);
 
     // Get service instance if registered with providers array within the component
     // service = fixture.debugElement.injector.get(ProductsService);

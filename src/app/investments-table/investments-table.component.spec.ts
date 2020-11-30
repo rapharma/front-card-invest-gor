@@ -1,5 +1,5 @@
 import { InvestmentsTableComponent } from './investments-table.component';
-import { ProductsService } from '../services/products.service';
+import { InvestmentsService } from '../services/investments.service';
 import { Investment } from '../models/product';
 import {  } from '../common/app-error';
 import { Observable } from 'rxjs/Observable';
@@ -9,10 +9,10 @@ import 'rxjs/add/observable/throw';
 
 xdescribe('InvestmentsTableComponent', () => {
   let component: InvestmentsTableComponent;
-  let service: ProductsService;
+  let service: InvestmentsService;
 
   beforeEach(() => {
-    service = new ProductsService(null);
+    service = new InvestmentsService(null);
     component = new InvestmentsTableComponent(service);
   });
 

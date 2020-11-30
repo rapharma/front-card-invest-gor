@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Investment } from '../models/product';
-import { ProductsService } from '../services/products.service';
+import { InvestmentsService } from '../services/investments.service';
 import { } from '../common/app-error';
 import * as moment from 'moment';
 import { ShareDataService } from '../services/share-data.service.spec';
@@ -31,7 +31,7 @@ export class InvestmentFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: ProductsService,
+    private service: InvestmentsService,
     private shareData: ShareDataService,
     private helperService: HelperService,
     private ngZone: NgZone
