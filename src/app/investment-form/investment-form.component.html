@@ -1,0 +1,64 @@
+<div class="product-form">
+<h3>{{ !editData ? addTitle : editTitle }} </h3>
+<hr>
+<div class=" well">
+  <form #f="ngForm" class="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="inputType">Type </label>
+          <select class="form-control" id="inputType" [(ngModel)]="investment.type" name="type" #type="ngModel">
+            <option [ngValue]="undefined" disabled>Select type</option>
+            <option *ngFor="let obj of investmentsTypes" [ngValue]="obj.value" [selected]="obj.value == investment.type"> {{obj.value}} </option>
+          </select>
+          <div class="error-message" *ngIf="editData ? (type.value == undefined && type.touched) : (type.value == undefined && type.touched) ">
+            Type is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="productValue">Value</label>
+          <input currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left' }" type="text" class="form-control"
+            placeholder="9.99" id="productValue" name="value" [ngModel]="investment.value" required #value="ngModel">
+          <div class="error-message" *ngIf="value.invalid && value.touched">
+            Value is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="inputDate">Date </label>
+          <input [textMask]="{mask: mask}" placeholder="99/99/9999" id="inputDate" type="text" name="date" [ngModel]="investment.date" required #date="ngModel" class="form-control">
+          <div class="error-message" *ngIf="date.invalid && date.touched">
+              Date is required.
+            </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-sm-3">
+          <div class="form-group">
+          <label for="add" class="add-label">{{ !editData ? 'Add' : 'Edit'}} </label>
+          <button id="add" name="add" type="submit" [disabled]="f.invalid || type.value == undefined" class="btn btn-primary">
+              <span *ngIf="editData" class="glyphicon glyphicon-ok"></span>
+              <span *ngIf="!editData" class="glyphicon glyphicon-plus"></span>
+            </button>
+          </div>
+      </div>
+
+    </div>
+    <div class="row">
+        <span class="feedback-message success">{{successMessage}}</span>
+    </div>
+    <div class="row">
+        <span class="feedback-message error">{{errorMessage}}</span>
+    </div>
+  </form>
+</div>
+</div>
+
