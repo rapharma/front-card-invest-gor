@@ -8,7 +8,6 @@ import { InvestmentsTableComponent } from './investments-table/investments-table
 
 const appRoutes: Routes = [
   { path: '' || 'products', component: InvestmentsTableComponent },
-  { path: 'products/new', component: InvestmentFormComponent },
   { path: 'products/:update', component: InvestmentFormComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found' }
