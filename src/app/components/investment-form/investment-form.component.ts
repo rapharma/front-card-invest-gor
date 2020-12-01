@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input, NgZone, OnDe
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Investment } from '../models/investment';
-import { InvestmentsService } from '../services/investment.service';
+import { Investment } from '../../models/investment';
+import { InvestmentsService } from '../../services/investment.service';
 import { } from '../common/app-error';
 import * as moment from 'moment';
-import { ShareDataService } from '../services/share-data.service';
-import { HelperService } from '../services/helper.service';
+import { ShareDataService } from '../../services/share-data.service';
+import { HelperService } from '../../services/helper.service';
 import { Subscription } from 'rxjs';
 
 const enum MESSAGES {
@@ -69,18 +69,14 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
 
     this.mask = this.helperService.getDateMask();
 
-    this.routeSubscription = this.route.paramMap.subscribe(params => {
-      const update = params.get('update');
-      if (update) {
-        this.editData = true;
-      }
-    });
+    this.verifyRouteParam();
 
     if (this.editData) {
       this.getTransferedItemForm();
     }
 
     this.initializeTypes();
+
   }
 
   initializeTypes() {
@@ -92,6 +88,15 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
         value: TYPES.variable,
       }
     );
+  }
+
+  verifyRouteParam() {
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      const update = params.get('update');
+      if (update) {
+        this.editData = true;
+      }
+    });
   }
 
   getTransferedItemForm() {
@@ -122,7 +127,7 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
 
   private addInvestment(investBody) {
     this.addDataSubscription = this.service.addInvestment(investBody).subscribe(
-      (product: Investment) => {
+      (res: Investment[]) => {
         this.resetFields();
         this.ngZone.run(() => this.inserted.emit(true));
         this.successMessage = MESSAGES.successAdd;
@@ -137,8 +142,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
 
   private updateInvestment(investBody, idInvestment) {
     this.updateDataSubscription = this.service.updateInvestment(investBody, idInvestment).subscribe(
-      (product: Investment) => {
-        this.router.navigate(['/products']);
+      (res: Investment[]) => {
+        this.router.navigate(['/investments']);
       },
       (error) => {
         this.errorMessage = MESSAGES.failedAdd;

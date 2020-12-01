@@ -17,22 +17,22 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let product of products.reverse()" >
-      <td>{{product.type}}</td>
-      <td class="text-right">{{product.value  | number : '1.2-2' }}</td>
-      <td class="text-center">{{product.date }}</td>
+    <tr *ngFor="let investment of investments.reverse()" >
+      <td>{{investment.type}}</td>
+      <td class="text-right">{{investment.value  | number : '1.2-2' }}</td>
+      <td class="text-center">{{investment.date }}</td>
       <td class="actions">
         <div class="btn-group btn-group-sm">
-          <button id="edit" name="edit" type="button" (click)="itemFormSelected(product)" class="btn btn-primary">
+          <button id="edit" name="edit" type="button" (click)="itemFormSelected(investment)" class="btn btn-primary">
             <span class="glyphicon glyphicon-edit"></span>
           </button>
-           <button id="save" name="save" type="button" (click)="onDelete(product._id)" class="btn btn-warning ml-1">
+           <button id="save" name="save" type="button" (click)="onDelete(investment._id)" class="btn btn-warning ml-1">
             <span class="glyphicon glyphicon-trash"></span>
           </button>
         </div>
       </td>
     </tr>
-    <span class="warning-message" *ngIf="products.length == 0">{{noDataMessage}}</span>
+    <span class="warning-message" *ngIf="investments.length == 0">{{noDataMessage}}</span>
   </tbody>
   </table>
 </div>

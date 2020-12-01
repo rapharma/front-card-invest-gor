@@ -4,7 +4,6 @@ import { InvestmentFormComponent } from './components/investment-form/investment
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { InvestmentsTableComponent } from './components/investments-table/investments-table.component';
 
-
 const appRoutes: Routes = [
   { path: '' || 'investments', component: InvestmentsTableComponent },
   { path: 'investments/:update', component: InvestmentFormComponent },

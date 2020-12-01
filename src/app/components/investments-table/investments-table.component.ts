@@ -1,13 +1,15 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 
-import { Investment } from '../models/investment';
-import { InvestmentsService } from '../services/investment.service';
+import { Investment } from '../../models/investment';
+import { InvestmentsService } from '../../services/investment.service';
 import { } from '../common/app-error';
 import * as moment from 'moment';
-import { ShareDataService } from '../services/share-data.service';
-import { HelperService } from '../services/helper.service';
+import { ShareDataService } from '../../services/share-data.service';
+import { HelperService } from '../../services/helper.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { User } from '../../models/user';
+import { UserService } from '../../services/user.service';
 
 const EMPTY = '';
 
@@ -18,26 +20,33 @@ const enum MESSAGES {
 }
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-investments-table',
   templateUrl: './investments-table.component.html',
   styleUrls: ['./investments-table.component.less']
 })
 
 export class InvestmentsTableComponent implements OnInit, OnDestroy {
-  products: Investment[] = [];
-  product: Investment;
+  investments: Investment[] = [];
+  investment: Investment;
+  user: User;
+
   tableMessageError: string;
   showTable: boolean;
   noDataMessage: string;
+  token: string;
+
   getSubscription: Subscription;
   deleteSubscription: Subscription;
+  regiterSubscription: Subscription;
+  authenticateSubscription: Subscription;
 
   constructor(private service: InvestmentsService,
     private shareData: ShareDataService,
     private helperService: HelperService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {
-    this.product = new Investment();
+    this.investment = new Investment();
     this.showTable = true;
     this.tableMessageError = '';
     this.noDataMessage = MESSAGES.noData;
@@ -49,20 +58,24 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.listInvestments();
+
+    this.initializeUser();
+
+    this.registerUser();
+
   }
 
-  listInvestments() {
+  private listInvestments() {
     this.showTable = true;
     this.getSubscription = this.service.getInvestments().subscribe(
-      (products) => {
+      (res) => {
         this.tableMessageError = '';
-        products['investments'].map(p => {
-          this.product._id = p._id;
-          this.product.type = p.type;
-          this.product.value = p.value;
-          this.product.date = this.helperService.formatDateGet(p.date)
-          this.products.push({ ...this.product });
+        res['investments'].map(p => {
+          this.investment._id = p._id;
+          this.investment.type = p.type;
+          this.investment.value = p.value;
+          this.investment.date = this.helperService.formatDateGet(p.date);
+          this.investments.push({ ...this.investment });
         });
       },
       (error) => {
@@ -73,22 +86,22 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
 
   itemFormSelected(p) {
     this.transferItemForm(p);
-    this.router.navigate(['/products', 'update']);
+    this.router.navigate(['/investments', 'update']);
   }
 
   transferItemForm(p) {
-    this.product._id = p._id;
-    this.product.type = p.type;
-    this.product.value = p.value;
-    this.shareData.sendData({ ...this.product });
+    this.investment._id = p._id;
+    this.investment.type = p.type;
+    this.investment.value = p.value;
+    this.shareData.sendInvestmentItem({ ...this.investment });
   }
 
-  onDelete(productId) {
-    if (confirm('Are you sure?')) {
-      this.deleteSubscription = this.service.deleteInvestment(productId).subscribe(
+  onDelete(investmentId) {
+    if (confirm('Are you sure you want to delete?')) {
+      this.deleteSubscription = this.service.deleteInvestment(investmentId).subscribe(
         () => {
-          this.products = this.products.filter(
-            product => product._id !== productId
+          this.investments = this.investments.filter(
+            product => product._id !== investmentId
           );
         },
         (error) => {
@@ -96,5 +109,44 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
+
+  private registerUser() {
+    this.regiterSubscription = this.userService.registerUser(this.user).subscribe(
+      (res) => {
+        console.log('register');
+        console.log(res);
+        console.log('//');
+        const userAuth = new User();
+        userAuth.email = this.user.email;
+        userAuth.password = this.user.password;
+        this.authenticateUser(userAuth);
+      },
+      (error) => {
+
+      }
+    );
+  }
+
+  private authenticateUser(userAuth) {
+    this. authenticateSubscription = this.userService.authenticateUser(userAuth).subscribe(
+      (res) => {
+        console.log('auth');
+        this.token = res.token;
+        sessionStorage.clear();
+        sessionStorage.setItem('token', this.token);
+        this.listInvestments();
+      },
+      (error) => {
+        // this.errorMessage = MESSAGES.failedAdd;
+      }
+    );
+  }
+
+  initializeUser() {
+    this.user = new User();
+    this.user.name = 'John';
+    this.user.email = `john${Math.random().toString()}@gmail.com`;
+    this.user.password = 'banana';
   }
 }

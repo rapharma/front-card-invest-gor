@@ -7,13 +7,20 @@ import { Investment } from '../models/investment';
 export class ShareDataService {
   product: Investment;
 
-  private dataSource = new BehaviorSubject(this.product);
-  currentData = this.dataSource.asObservable();
+  private dataSourceInvestment = new BehaviorSubject(this.product);
+  currentData = this.dataSourceInvestment.asObservable();
+
+  private dataSourceToken = new BehaviorSubject('');
+  currentToken = this.dataSourceToken.asObservable();
 
   constructor() { }
 
-  sendData(data) {
-    this.dataSource.next(data);
+  sendInvestmentItem(investItem) {
+    this.dataSourceInvestment.next(investItem);
+  }
+
+  sendToken(token) {
+    this.dataSourceToken.next(token);
   }
 
 }

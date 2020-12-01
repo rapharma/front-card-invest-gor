@@ -16,6 +16,7 @@ import { ShareDataService } from './services/share-data.service';
 import { HelperService } from './services/helper.service';
 import { AppNavComponent } from './components/app-nav/app-nav.component';
 import { AppRoutingModule } from './app-routing.module';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { AppRoutingModule } from './app-routing.module';
     AppNavComponent,
     InvestmentsTableComponent,
     NotFoundComponent,
-    InvestmentFormComponent,
+    InvestmentFormComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +34,7 @@ import { AppRoutingModule } from './app-routing.module';
     CurrencyMaskModule,
     TextMaskModule
   ],
-  providers: [InvestmentsService, ShareDataService, HelperService],
+  providers: [InvestmentsService, ShareDataService, HelperService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

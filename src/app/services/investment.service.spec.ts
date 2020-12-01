@@ -23,8 +23,6 @@ describe('Investment', () => {
     });
 
     service = TestBed.get(InvestmentsService);
-    service.token = '1234';
-    service.headers = new Headers();
   });
 
   it('should call the list of investments and returning an error', () => {
