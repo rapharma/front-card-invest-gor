@@ -1,6 +1,8 @@
 <div class="product-form">
+  <h3>{{hello}} <strong> {{userLogged}} </strong></h3>
 <h3>{{ !editData ? addTitle : editTitle }} </h3>
 <hr>
+
 <div class=" well">
   <form #f="ngForm" class="form" (ngSubmit)="onSubmit()">
     <div class="row">

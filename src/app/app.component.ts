@@ -8,6 +8,6 @@ import { Subscription } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements {
+export class AppComponent {
   title = 'Invest App';
 }

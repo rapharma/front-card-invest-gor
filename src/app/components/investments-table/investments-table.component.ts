@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 import { Investment } from '../../models/investment';
 import { InvestmentsService } from '../../services/investment.service';
@@ -34,6 +34,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   showTable: boolean;
   noDataMessage: string;
   token: string;
+  userLogged: string;
 
   getSubscription: Subscription;
   deleteSubscription: Subscription;
@@ -111,16 +112,23 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     }
   }
 
+  initializeUser() {
+    this.user = new User();
+    this.user.name = 'John';
+    this.user.email = `john${Math.random().toString()}@gmail.com`;
+    this.user.password = 'banana';
+  }
+
   private registerUser() {
     this.regiterSubscription = this.userService.registerUser(this.user).subscribe(
       (res) => {
-        console.log('register');
-        console.log(res);
-        console.log('//');
-        const userAuth = new User();
-        userAuth.email = this.user.email;
-        userAuth.password = this.user.password;
-        this.authenticateUser(userAuth);
+        console.log('res.user');
+        console.log(res.user);
+        const userBody = new User();
+        userBody.name = this.user.name;
+        userBody.email = this.user.email;
+        userBody.password = this.user.password;
+        this.authentUser(userBody, res.user);
       },
       (error) => {
 
@@ -128,13 +136,13 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     );
   }
 
-  private authenticateUser(userAuth) {
-    this. authenticateSubscription = this.userService.authenticateUser(userAuth).subscribe(
+  private authentUser(userBody, responseUsername) {
+    this.authenticateSubscription = this.userService.authenticateUser(userBody).subscribe(
       (res) => {
-        console.log('auth');
         this.token = res.token;
         sessionStorage.clear();
         sessionStorage.setItem('token', this.token);
+        sessionStorage.setItem('username', responseUsername);
         this.listInvestments();
       },
       (error) => {
@@ -143,10 +151,4 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     );
   }
 
-  initializeUser() {
-    this.user = new User();
-    this.user.name = 'John';
-    this.user.email = `john${Math.random().toString()}@gmail.com`;
-    this.user.password = 'banana';
-  }
 }

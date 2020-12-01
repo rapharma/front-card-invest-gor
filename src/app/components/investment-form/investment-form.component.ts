@@ -41,6 +41,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   addDataSubscription: Subscription;
   updateDataSubscription: Subscription;
   @Output() inserted = new EventEmitter<boolean>();
+  hello = 'Hello';
+  userLogged = this.getUsername();
 
   @ViewChild('f') investForm: NgForm;
 
@@ -138,6 +140,10 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
         setTimeout(() => { this.errorMessage = ''; }, 2000);
       }
     );
+  }
+
+  getUsername(): string {
+    return sessionStorage.getItem('username') !== undefined ? sessionStorage.getItem('username') : '';
   }
 
   private updateInvestment(investBody, idInvestment) {
