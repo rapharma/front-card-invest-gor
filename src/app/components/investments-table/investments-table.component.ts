@@ -36,10 +36,10 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   token: string;
   userLogged: string;
 
-  getSubscription: Subscription;
-  deleteSubscription: Subscription;
-  regiterSubscription: Subscription;
-  authenticateSubscription: Subscription;
+  getSubscription = new Subscription();
+  deleteSubscription = new Subscription();
+  regiterSubscription = new Subscription();
+  authenticateSubscription = new Subscription();
 
   constructor(private service: InvestmentsService,
     private shareData: ShareDataService,
@@ -71,6 +71,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
         this.tableMessageError = '';
+        this.investments = [];
         res['investments'].map(p => {
           this.investment._id = p._id;
           this.investment.type = p.type;

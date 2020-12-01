@@ -32,7 +32,9 @@
         </div>
       </td>
     </tr>
-    <span class="warning-message" *ngIf="investments.length == 0">{{noDataMessage}}</span>
+    <tr *ngIf="investments.length == 0">
+      <td class="warning-message" colspan="4">{{noDataMessage}}</td>
+    </tr>
   </tbody>
   </table>
 </div>

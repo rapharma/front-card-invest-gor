@@ -36,10 +36,10 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   errorMessage: string;
   addTitle: string;
   editTitle: string;
-  routeSubscription: Subscription;
-  shareDataSubscription: Subscription;
-  addDataSubscription: Subscription;
-  updateDataSubscription: Subscription;
+  routeSubscription = new Subscription();
+  shareDataSubscription = new Subscription();
+  addDataSubscription = new Subscription();
+  updateDataSubscription = new Subscription();
   @Output() inserted = new EventEmitter<boolean>();
   hello = 'Hello';
   userLogged = this.getUsername();
@@ -62,7 +62,6 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
-    this.shareDataSubscription.unsubscribe();
     this.addDataSubscription.unsubscribe();
     this.updateDataSubscription.unsubscribe();
   }
