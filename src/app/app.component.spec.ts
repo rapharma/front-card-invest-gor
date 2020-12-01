@@ -6,7 +6,7 @@ import { RouterOutlet } from '@angular/router';
 
 import { AppComponent } from './app.component';
 
-xdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
 

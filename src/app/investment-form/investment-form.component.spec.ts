@@ -6,79 +6,38 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
 import { InvestmentFormComponent } from './investment-form.component';
-import { InvestmentsService } from '../services/investments.service';
+import { InvestmentsService } from '../services/investment.service';
+import { CurrencyMaskDirective } from 'ng2-currency-mask';
+import { TextMaskConfig, TextMaskModule } from 'angular2-text-mask';
+import { ShareDataService } from '../services/share-data.service';
+import { HelperService } from '../services/helper.service';
+import { NgZone } from '@angular/core/src/zone/ng_zone';
+import { ActivatedRoute } from '@angular/router/src/router_state';
+import { Router } from '@angular/router';
 
-xdescribe('InvestmentFormComponent', () => {
-  let fixture: ComponentFixture<InvestmentFormComponent>;
+describe('InvestmentFormComponent', () => {
   let component: InvestmentFormComponent;
   let service: InvestmentsService;
+  let shareDataServ: ShareDataService;
+  let ngZone: NgZone;
+  let helperService: HelperService;
+  let route: ActivatedRoute;
+  let router: Router;
+
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InvestmentFormComponent],
-      imports: [FormsModule, HttpModule, RouterTestingModule],
-      providers: [InvestmentsService]
+      declarations: [InvestmentFormComponent, CurrencyMaskDirective],
+      imports: [FormsModule, HttpModule, RouterTestingModule, TextMaskModule],
+      providers: [InvestmentsService, ShareDataService, HelperService]
     });
 
-    fixture = TestBed.createComponent(InvestmentFormComponent);
-    component = fixture.componentInstance;
+    component = new InvestmentFormComponent(route, router, service, shareDataServ, ngZone, helperService);
 
-    // Get service instance if registered with providers array of module
-    service = TestBed.get(InvestmentsService);
-
-    // Get service instance if registered with providers array within the component
-    // service = fixture.debugElement.injector.get(ProductsService);
   });
 
-  it(
-    'should show product details for a particular product',
-    async(() => {
-      const product = {
-        id: 1,
-        name: 'iPhone 8',
-        description: 'Apple smart phone',
-        price: 70000,
-        isAvailable: true
-      };
-
-      component.investment = product;
-
-      fixture.detectChanges();
-
-      fixture.whenStable().then(() => {
-        const nameElement: HTMLInputElement = fixture.debugElement.query(
-          By.css('#productName')
-        ).nativeElement;
-        const descriptionElement: HTMLTextAreaElement = fixture.debugElement.query(
-          By.css('#productDescription')
-        ).nativeElement;
-        const isAvailableElement: HTMLInputElement = fixture.debugElement.query(
-          By.css('#productIsAvailable')
-        ).nativeElement;
-        const priceElement: HTMLInputElement = fixture.debugElement.query(
-          By.css('#productPrice')
-        ).nativeElement;
-
-        expect(nameElement.value).toContain(product.name);
-        expect(descriptionElement.value).toContain(product.description);
-        expect(isAvailableElement.checked).toBeTruthy();
-        expect(priceElement.value).toContain(product.price.toString());
-      });
-    })
-  );
-
-  it('should save product details when form is submitted', () => {
-    component.editData = true;
-    const spy = spyOn(service, 'addProduct').and.returnValue(
-      Observable.empty()
-    );
-
-    const form = fixture.debugElement.query(By.css('form'));
-    form.triggerEventHandler('submit', null);
-
-    // const button = fixture.debugElement.query(By.css('#save'));
-    // button.nativeElement.click();
-
-    expect(spy).toHaveBeenCalled();
+  it('should create InvestmentForm', () => {
+    expect(component).toBeTruthy();
   });
+
 });

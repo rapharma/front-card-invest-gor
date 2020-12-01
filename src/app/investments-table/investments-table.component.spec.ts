@@ -1,125 +1,38 @@
 import { InvestmentsTableComponent } from './investments-table.component';
-import { InvestmentsService } from '../services/investments.service';
-import { Investment } from '../models/product';
+import { InvestmentsService } from '../services/investment.service';
+import { Investment } from '../models/investment';
 import {  } from '../common/app-error';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/throw';
+import { ShareDataService } from '../services/share-data.service';
+import { HelperService } from '../services/helper.service';
+import { Router } from '@angular/router';
+import { TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CurrencyMaskDirective } from 'ng2-currency-mask';
 
-xdescribe('InvestmentsTableComponent', () => {
+describe('InvestmentsTableComponent', () => {
+
   let component: InvestmentsTableComponent;
   let service: InvestmentsService;
+  let shareDataServ: ShareDataService;
+  let helperService: HelperService;
+  let router: Router;
 
   beforeEach(() => {
-    service = new InvestmentsService(null);
-    component = new InvestmentsTableComponent(service);
-  });
-
-  it('should set products property with the items returned from the server', () => {
-    // Arrange - Setup
-    const products: Investment[] = [
-      {
-        id: 1,
-        name: 'p1',
-        description: 'p1 description',
-        price: 10,
-        isAvailable: true
-      },
-      {
-        id: 2,
-        name: 'p2',
-        description: 'p2 description',
-        price: 20,
-        isAvailable: false
-      },
-      {
-        id: 3,
-        name: 'p3',
-        description: 'p3 description',
-        price: 30,
-        isAvailable: true
-      }
-    ];
-
-    spyOn(service, 'getProducts').and.callFake(() => {
-      return Observable.from([products]);
+    TestBed.configureTestingModule({
+      declarations: [InvestmentsTableComponent],
+      imports: [FormsModule, HttpModule, RouterTestingModule],
+      providers: [InvestmentsService, , helperService, ShareDataService]
     });
-
-    // spyOn(service, 'getProducts').and.returnValue(Observable.from([products]));
-
-    // Act - Make the actual call
-    component.ngOnInit();
-
-    // Assert - Check and report whether the test is pass or fail
-    expect(component.products).toEqual(products);
+    component = new InvestmentsTableComponent(service, shareDataServ, helperService, router);
   });
 
-  it('should set the errorproperty if server returns an errorwhen getting products', () => {
-    const error= new ('server error');
-    spyOn(service, 'getProducts').and.returnValue(Observable.throw(error));
-
-    expect(component.error).not.toBeDefined();
-
-    component.ngOnInit();
-
-    expect(component.error).toBeDefined();
-    expect(component.error.originalError).toEqual('server error');
-  });
-
-  it('should call the server to delete a product if the user confirms', () => {
-    spyOn(window, 'confirm').and.returnValue(true);
-    const spy = spyOn(service, 'deleteProduct').and.returnValue(
-      Observable.empty()
-    );
-
-    const productId = 1;
-    component.onDelete(productId);
-
-    expect(spy).toHaveBeenCalledWith(productId);
-  });
-
-  it('should NOT call the server to delete a product if the user cancels', () => {
-    spyOn(window, 'confirm').and.returnValue(false);
-    const spy = spyOn(service, 'deleteProduct').and.returnValue(
-      Observable.empty()
-    );
-
-    const productId = 1;
-    component.onDelete(productId);
-
-    expect(spy).not.toHaveBeenCalledWith(productId);
-  });
-
-  it('should delete the product from the products array within the component', () => {
-    component.products = [
-      {
-        _id: 1,
-        name: 'p1',
-        description: 'p1 description',
-        price: 10,
-        isAvailable: true
-      },
-      {
-        id: 2,
-        name: 'p2',
-        description: 'p2 description',
-        price: 20,
-        isAvailable: false
-      }
-    ];
-
-    spyOn(window, 'confirm').and.returnValue(true);
-    const spy = spyOn(service, 'deleteProduct').and.returnValue(
-      Observable.from([null])
-    );
-
-    const productId = '2';
-    component.onDelete(productId);
-
-    const index = component.products.findIndex(
-      product => product._id === productId
-    );
-    expect(index).toBeLessThan(0);
+  it('should create InvestmentTable', () => {
+    expect(component).toBeTruthy();
   });
 });

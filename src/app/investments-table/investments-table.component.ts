@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
-import { Investment } from '../models/product';
-import { InvestmentsService } from '../services/investments.service';
+import { Investment } from '../models/investment';
+import { InvestmentsService } from '../services/investment.service';
 import { } from '../common/app-error';
 import * as moment from 'moment';
-import { ShareDataService } from '../services/share-data.service.spec';
+import { ShareDataService } from '../services/share-data.service';
 import { HelperService } from '../services/helper.service';
 import { Router } from '@angular/router';
 
@@ -42,7 +42,7 @@ export class InvestmentsTableComponent implements OnInit {
   listInvestments() {
     console.log('listou')
     this.showTable = true;
-    this.service.getProducts().subscribe(
+    this.service.getInvestments().subscribe(
       (products) => {
         this.tableMessageError = '';
         products['investments'].map(p => {
@@ -73,7 +73,7 @@ export class InvestmentsTableComponent implements OnInit {
 
   onDelete(productId) {
     if (confirm('Are you sure?')) {
-      this.service.deleteProduct(productId).subscribe(
+      this.service.deleteInvestment(productId).subscribe(
         () => {
           this.products = this.products.filter(
             product => product._id !== productId

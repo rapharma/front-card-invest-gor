@@ -2,11 +2,11 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input, NgZone } fro
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Investment } from '../models/product';
-import { InvestmentsService } from '../services/investments.service';
+import { Investment } from '../models/investment';
+import { InvestmentsService } from '../services/investment.service';
 import { } from '../common/app-error';
 import * as moment from 'moment';
-import { ShareDataService } from '../services/share-data.service.spec';
+import { ShareDataService } from '../services/share-data.service';
 import { HelperService } from '../services/helper.service';
 
 @Component({
@@ -33,17 +33,18 @@ export class InvestmentFormComponent implements OnInit {
     private router: Router,
     private service: InvestmentsService,
     private shareData: ShareDataService,
+    private ngZone: NgZone,
     private helperService: HelperService,
-    private ngZone: NgZone
   ) {
     this.investment = new Investment();
     this.investmentsTypes = [];
-    this.mask = this.helperService.getDateMask();
     this.addTitle = 'Add an investment';
     this.editTitle = 'Edit this investment';
   }
 
   ngOnInit() {
+
+    this.mask = this.helperService.getDateMask();
 
     this.route.paramMap.subscribe(params => {
       const update = params.get('update');
@@ -97,7 +98,7 @@ export class InvestmentFormComponent implements OnInit {
   }
 
   private addInvestment(investBody) {
-    this.service.addProduct(investBody).subscribe(
+    this.service.addInvestment(investBody).subscribe(
       (product: Investment) => {
         this.resetFields();
         this.ngZone.run(() => this.inserted.emit(true));
@@ -112,7 +113,7 @@ export class InvestmentFormComponent implements OnInit {
   }
 
   private updateInvestment(investBody, idInvestment) {
-    this.service.updateProduct(investBody, idInvestment).subscribe(
+    this.service.updateInvestment(investBody, idInvestment).subscribe(
       (product: Investment) => {
         this.router.navigate(['/products']);
       },

@@ -44,7 +44,7 @@
       <div class="col-sm-3">
           <div class="form-group">
           <label for="add" class="add-label">{{ !editData ? 'Add' : 'Edit'}} </label>
-          <button id="add" name="add" type="submit" [disabled]="f.invalid || type.value == undefined" class="btn btn-primary">
+          <button id="add" name="add" type="submit" value="add" [disabled]="f.invalid || type.value == undefined" class="btn btn-primary">
               <span *ngIf="editData" class="glyphicon glyphicon-ok"></span>
               <span *ngIf="!editData" class="glyphicon glyphicon-plus"></span>
             </button>

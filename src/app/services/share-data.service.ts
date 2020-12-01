@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Investment } from '../models/product';
+import { Investment } from '../models/investment';
 
 
 @Injectable()
@@ -13,7 +13,7 @@ export class ShareDataService {
   constructor() { }
 
   sendData(data) {
-    this.dataSource.next(data)
+    this.dataSource.next(data);
   }
 
 }
