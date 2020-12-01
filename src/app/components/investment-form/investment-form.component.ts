@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, NgZone, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -8,13 +8,25 @@ import { } from '../common/app-error';
 import * as moment from 'moment';
 import { ShareDataService } from '../services/share-data.service';
 import { HelperService } from '../services/helper.service';
+import { Subscription } from 'rxjs';
+
+const enum MESSAGES {
+  successAdd = 'Investment added with success',
+  failedUpdate = 'Failed to update investment',
+  failedAdd = 'Failed to add investment',
+}
+
+const enum TYPES {
+  fixed = 'Fixed Income',
+  variable = 'Variable Income'
+}
 
 @Component({
   selector: 'app-investment-form',
   templateUrl: './investment-form.component.html',
   styleUrls: ['./investment-form.component.less']
 })
-export class InvestmentFormComponent implements OnInit {
+export class InvestmentFormComponent implements OnInit, OnDestroy {
   id: number;
   investment: Investment;
   editData: boolean;
@@ -24,6 +36,10 @@ export class InvestmentFormComponent implements OnInit {
   errorMessage: string;
   addTitle: string;
   editTitle: string;
+  routeSubscription: Subscription;
+  shareDataSubscription: Subscription;
+  addDataSubscription: Subscription;
+  updateDataSubscription: Subscription;
   @Output() inserted = new EventEmitter<boolean>();
 
   @ViewChild('f') investForm: NgForm;
@@ -42,11 +58,18 @@ export class InvestmentFormComponent implements OnInit {
     this.editTitle = 'Edit this investment';
   }
 
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
+    this.shareDataSubscription.unsubscribe();
+    this.addDataSubscription.unsubscribe();
+    this.updateDataSubscription.unsubscribe();
+  }
+
   ngOnInit() {
 
     this.mask = this.helperService.getDateMask();
 
-    this.route.paramMap.subscribe(params => {
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
       const update = params.get('update');
       if (update) {
         this.editData = true;
@@ -63,16 +86,16 @@ export class InvestmentFormComponent implements OnInit {
   initializeTypes() {
     this.investmentsTypes.push(
       {
-        value: 'Fixed Income',
+        value: TYPES.fixed,
       },
       {
-        value: 'Variable Income',
+        value: TYPES.variable,
       }
     );
   }
 
   getTransferedItemForm() {
-    this.shareData.currentData.subscribe(prod => {
+    this.shareDataSubscription = this.shareData.currentData.subscribe(prod => {
       if (prod) {
         this.investment._id = prod._id;
         this.investment.type = prod.type;
@@ -98,27 +121,27 @@ export class InvestmentFormComponent implements OnInit {
   }
 
   private addInvestment(investBody) {
-    this.service.addInvestment(investBody).subscribe(
+    this.addDataSubscription = this.service.addInvestment(investBody).subscribe(
       (product: Investment) => {
         this.resetFields();
         this.ngZone.run(() => this.inserted.emit(true));
-        this.successMessage = 'Investment added with success';
+        this.successMessage = MESSAGES.successAdd;
         setTimeout(() => { this.successMessage = ''; }, 2000);
       },
       (error) => {
-        this.errorMessage = 'Failed to add investment';
+        this.errorMessage = MESSAGES.failedAdd;
         setTimeout(() => { this.errorMessage = ''; }, 2000);
       }
     );
   }
 
   private updateInvestment(investBody, idInvestment) {
-    this.service.updateInvestment(investBody, idInvestment).subscribe(
+    this.updateDataSubscription = this.service.updateInvestment(investBody, idInvestment).subscribe(
       (product: Investment) => {
         this.router.navigate(['/products']);
       },
       (error) => {
-        this.errorMessage = 'Failed to update investment';
+        this.errorMessage = MESSAGES.failedAdd;
       }
     );
   }

@@ -17,10 +17,10 @@
       "prefix": "app",
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.css",
-        "app/sortable.css"
+        "app/scripts/sortable.css"
       ],
       "scripts": [
-        "app/sortable.js"
+        "app/scripts/sortable.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

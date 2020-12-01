@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { InvestmentFormComponent } from './investment-form/investment-form.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { InvestmentsTableComponent } from './investments-table/investments-table.component';
+import { InvestmentFormComponent } from './components/investment-form/investment-form.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { InvestmentsTableComponent } from './components/investments-table/investments-table.component';
 
 
 const appRoutes: Routes = [
