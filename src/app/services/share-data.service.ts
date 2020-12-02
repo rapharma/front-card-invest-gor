@@ -5,9 +5,9 @@ import { Investment } from '../models/investment';
 
 @Injectable()
 export class ShareDataService {
-  product: Investment;
+  investment: Investment;
 
-  private dataSourceInvestment = new BehaviorSubject(this.product);
+  private dataSourceInvestment = new BehaviorSubject(this.investment);
   currentData = this.dataSourceInvestment.asObservable();
 
   private dataSourceToken = new BehaviorSubject('');

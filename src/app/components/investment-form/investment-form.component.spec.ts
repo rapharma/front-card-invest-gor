@@ -6,24 +6,24 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 
 import { InvestmentFormComponent } from './investment-form.component';
-import { InvestmentsService } from '../services/investment.service';
+import { InvestmentsService } from '../../services/investment.service';
 import { CurrencyMaskDirective } from 'ng2-currency-mask';
 import { TextMaskConfig, TextMaskModule } from 'angular2-text-mask';
-import { ShareDataService } from '../services/share-data.service';
-import { HelperService } from '../services/helper.service';
+import { ShareDataService } from '../../services/share-data.service';
+import { HelperService } from '../../services/helper.service';
 import { NgZone } from '@angular/core/src/zone/ng_zone';
 import { ActivatedRoute } from '@angular/router/src/router_state';
 import { Router } from '@angular/router';
 
 describe('InvestmentFormComponent', () => {
   let component: InvestmentFormComponent;
+  let fixture: ComponentFixture<InvestmentFormComponent>;
   let service: InvestmentsService;
   let shareDataServ: ShareDataService;
   let ngZone: NgZone;
   let helperService: HelperService;
   let route: ActivatedRoute;
   let router: Router;
-
 
   beforeEach(() => {
     TestBed.configureTestingModule({
