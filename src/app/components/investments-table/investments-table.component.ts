@@ -66,7 +66,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
 
   }
 
-  private listInvestments() {
+  listInvestments() {
     this.showTable = true;
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
