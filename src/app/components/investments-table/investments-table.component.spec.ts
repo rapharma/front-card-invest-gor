@@ -13,7 +13,6 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CurrencyMaskDirective } from 'ng2-currency-mask';
 import { UserService } from '../../services/user.service';
 
 describe('InvestmentsTableComponent', () => {

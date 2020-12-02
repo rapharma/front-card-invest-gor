@@ -23,8 +23,8 @@
       <div class="col-sm-3">
         <div class="form-group">
           <label for="inputValue">Value</label>
-          <input currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',', align: 'left' }" type="text" class="form-control"
-            placeholder="9.99" id="inputValue" name="value" [ngModel]="investment.value" required #value="ngModel">
+          <input type="text" class="form-control"
+            placeholder="99" id="inputValue" name="value" [ngModel]="investment.value" required #value="ngModel">
           <div class="error-message" *ngIf="value.invalid && value.touched">
             Value is required.
           </div>

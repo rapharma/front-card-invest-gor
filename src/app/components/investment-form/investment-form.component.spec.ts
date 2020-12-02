@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { InvestmentFormComponent } from './investment-form.component';
 import { InvestmentsService } from '../../services/investment.service';
-import { CurrencyMaskDirective } from 'ng2-currency-mask';
 import { TextMaskConfig, TextMaskModule } from 'angular2-text-mask';
 import { ShareDataService } from '../../services/share-data.service';
 import { HelperService } from '../../services/helper.service';
@@ -27,7 +26,7 @@ describe('InvestmentFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InvestmentFormComponent, CurrencyMaskDirective],
+      declarations: [InvestmentFormComponent],
       imports: [FormsModule, HttpModule, RouterTestingModule, TextMaskModule],
       providers: [InvestmentsService, ShareDataService, HelperService]
     });
