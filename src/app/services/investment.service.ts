@@ -17,18 +17,19 @@ export class InvestmentsService {
   private baseUrl = '';
   private mainUrl = '';
   private investments: Investment[] = [];
-  private token = '';
+  private token: string;
   private headers = new Headers();
 
   constructor(private http: Http) {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
-    this.token = '';
+    this.token = sessionStorage.getItem('token');
+    console.log('tok invest service', this.token);
    }
 
   getInvestments(token): Observable<Investment[]> {
     console.log('get token', this.token);
-    this.inserHeader(token);
+    this.inserHeader(this.token);
     return this.http
       .get(`${this.baseUrl}${this.mainUrl}`, { headers: this.headers })
       .map((response: Response) => response.json())

@@ -41,8 +41,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   updateDataSubscription = new Subscription();
   @Output() inserted = new EventEmitter();
   hello = 'Hello';
-  token = this.getToken();
-  userLogged = this.getUsername();
+  token: string;
+  userLogged: string;
 
   @ViewChild('f') investForm: NgForm;
 
@@ -57,6 +57,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     this.investmentsTypes = [];
     this.addTitle = 'Add an investment';
     this.editTitle = 'Edit this investment';
+    this.token = '';
+    this.userLogged = '';
   }
 
   ngOnDestroy() {
@@ -67,7 +69,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    console.log('form token', this.token);
+    this.userLogged = this.getUsername();
+    this.token = this.getToken();
 
     this.mask = this.helperService.getDateMask();
 

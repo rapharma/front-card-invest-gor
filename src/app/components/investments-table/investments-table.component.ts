@@ -56,6 +56,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     this.tableMessageError = '';
     this.loginMessageError = '';
     this.noDataMessage = MESSAGES.noData;
+    this.token = '';
   }
 
   ngOnDestroy() {

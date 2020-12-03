@@ -23,8 +23,8 @@ export class ChartComponent implements OnInit {
   datesAux = Array<Date>();
   dates = Array<string>();
   chartMessageError: string;
-
   loadingMessage: string;
+  token: string;
 
   @ViewChild('mychart') mychart;
 
@@ -33,22 +33,14 @@ export class ChartComponent implements OnInit {
     private helperService: HelperService,
     private shareData: ShareDataService) {
       this.loadingMessage = 'Loading chart...';
-     }
+      this.token = '';
+  }
 
   ngOnInit() {
 
     setTimeout(() => { this.loadingMessage = ''}, 1000);
 
-    this.shareData.currentToken.subscribe(tok => {
-      console.log('tok chart')
-      if (tok) {
-        console.log('tok chart inside true')
-      } else {
-        // this.router.navigate(['/investments']);
-      }
-    });
-
-    this.listInvestments();
+    this.getToken();
 
   }
 
@@ -56,7 +48,7 @@ export class ChartComponent implements OnInit {
     enum typeInv {
       title = 'Fixed Income'
     }
-    this.getSubscription = this.service.getInvestments('').subscribe(
+    this.getSubscription = this.service.getInvestments(this.token).subscribe(
       (res) => {
         this.chartMessageError = '';
         res['investments']
@@ -120,4 +112,13 @@ export class ChartComponent implements OnInit {
 
   }
 
+  getToken() {
+    this.shareData.currentToken.subscribe(tok => {
+      if (tok) {
+       this.listInvestments();
+      } else {
+        this.chartMessageError = MESSAGES.failedChart;
+      }
+    });
+  }
 }
