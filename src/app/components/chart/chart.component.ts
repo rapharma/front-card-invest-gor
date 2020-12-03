@@ -4,6 +4,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { InvestmentsService } from '../../services/investment.service';
 import { HelperService } from '../../services/helper.service';
 
+enum MESSAGE {
+  failedChart = 'Chart unavailable'
+}
+
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
@@ -17,8 +21,8 @@ export class ChartComponent implements OnInit {
   variableIncomes =  [{x: '', y: ''}];
   datesAux = Array<Date>();
   dates = Array<string>();
-
-  loadingMessage = '';
+  loadingMessage: string;
+  chartMessageError: string;
 
   @ViewChild('mychart') mychart;
 
@@ -42,6 +46,7 @@ export class ChartComponent implements OnInit {
     }
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
+        this.chartMessageError = '';
         res['investments']
         .map(investment => {
           investment.type === typeInv.title ? this.fixedIncomes.push({
@@ -52,14 +57,9 @@ export class ChartComponent implements OnInit {
             y: investment.value
           });
 
-
-
           this.datesAux.push(new Date(this.helperService.formatDateAuxChart(investment.date)));
 
         });
-
-        console.log(this.variableIncomes);
-
 
         this.datesAux.sort((a: any, b: any) => a - b);
 
@@ -67,11 +67,10 @@ export class ChartComponent implements OnInit {
           this.dates.push(this.helperService.formatDateChart(d.toLocaleDateString()));
         });
 
-        console.log('sorted', this.dates);
         this.createChart();
       },
       (error) => {
-        // this.tableMessageError = MESSAGES.failedList;
+        this.chartMessageError = MESSAGE.failedChart;
       }
     );
   }
