@@ -11,12 +11,16 @@ import { User } from '../models/user';
 
 @Injectable()
 export class UserService {
-  private baseUrl = 'https://api-card-invest-gor.herokuapp.com';
-  private urlRegister = '/auth/register';
-  private urlAuthenticate = '/auth/authenticate';
+  private baseUrl = '';
+  private urlRegister = '';
+  private urlAuthenticate = '';
   private user: User;
 
-  constructor(private http: Http) {  }
+  constructor(private http: Http) {
+    this.baseUrl = 'https://api-card-invest-gor.herokuapp.com';
+    this.urlRegister = '/auth/register';
+    this.urlAuthenticate = '/auth/authenticate';
+   }
 
   registerUser(user) {
     return this.http
@@ -33,6 +37,6 @@ export class UserService {
   }
 
   private handleError(errorResponse) {
-    return Observable.throw(errorResponse);
+    return Observable.throw(errorResponse.statusText);
   }
 }

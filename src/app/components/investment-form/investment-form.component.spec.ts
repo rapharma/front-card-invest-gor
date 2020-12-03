@@ -19,7 +19,6 @@ describe('InvestmentFormComponent', () => {
   let fixture: ComponentFixture<InvestmentFormComponent>;
   let service: InvestmentsService;
   let shareDataServ: ShareDataService;
-  let ngZone: NgZone;
   let helperService: HelperService;
   let route: ActivatedRoute;
   let router: Router;
@@ -31,7 +30,7 @@ describe('InvestmentFormComponent', () => {
       providers: [InvestmentsService, ShareDataService, HelperService]
     });
 
-    component = new InvestmentFormComponent(route, router, service, shareDataServ, ngZone, helperService);
+    component = new InvestmentFormComponent(route, router, service, shareDataServ, helperService);
 
   });
 

@@ -13,21 +13,26 @@ export class ChartComponent implements OnInit {
 
   chart = [];
   getSubscription = new Subscription();
-  fixedIncomes = new Array<number>();
-  variableIncomes = new Array<number>();
-  dates = new Array<string>();
+  fixedIncomes = [{x: '', y: ''}];
+  variableIncomes =  [{x: '', y: ''}];
+  datesAux = Array<Date>();
+  dates = Array<string>();
+
+  loadingMessage = '';
 
   @ViewChild('mychart') mychart;
 
 
   constructor(private service: InvestmentsService,
-    private helperService: HelperService) { }
+    private helperService: HelperService) {
+      this.loadingMessage = 'Loading chart...';
+     }
 
   ngOnInit() {
 
+    setTimeout(() => { this.loadingMessage = ''}, 1000);
+
     this.listInvestments();
-
-
 
   }
 
@@ -38,12 +43,31 @@ export class ChartComponent implements OnInit {
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
         res['investments']
-        .map(investments => {
-          investments.type === typeInv.title ? this.fixedIncomes.push(investments.value) : this.variableIncomes.push(investments.value);
-          this.dates.push(this.helperService.formatDateGet(investments.date));
+        .map(investment => {
+          investment.type === typeInv.title ? this.fixedIncomes.push({
+            x: this.helperService.formatDateGet(investment.date),
+            y: investment.value
+          }) : this.variableIncomes.push({
+            x: this.helperService.formatDateGet(investment.date),
+            y: investment.value
+          });
+
+
+
+          this.datesAux.push(new Date(this.helperService.formatDateAuxChart(investment.date)));
+
         });
-        console.log('this.fixedIncomes.length', this.fixedIncomes.length)
-        console.log('this.variableIncomes.length', this.variableIncomes.length)
+
+        console.log(this.variableIncomes);
+
+
+        this.datesAux.sort((a: any, b: any) => a - b);
+
+        this.datesAux.map(d => {
+          this.dates.push(this.helperService.formatDateChart(d.toLocaleDateString()));
+        });
+
+        console.log('sorted', this.dates);
         this.createChart();
       },
       (error) => {
@@ -56,42 +80,29 @@ export class ChartComponent implements OnInit {
     const canvas = this.mychart.nativeElement;
     const ctx = canvas.getContext('2d');
 
-    const label = [50, 100, 150, 200];
-    const temp_min = [10, 20, 30, 40];
-    const temp_max = [101, 150, 200, 250];
-
-    const weatherDates = [];
-
     const mychart = new Chart(ctx, {
-      type: 'line',
+      type: 'bar',
       data: {
         labels: this.dates,
         datasets: [
           {
             label: 'Fixed Incomes',
-            data: this.fixedIncomes,
+            data: this.fixedIncomes.slice(1),
             borderWidth: 6,
-            borderColor: '#007f00',
-            backgroundColor: 'transparent'
+            borderColor: 'rgba(0, 255, 0)',
+            backgroundColor: 'rgba(0, 255, 0, 0.8)'
           },
           {
             label: 'Variable Incomes',
-            data: this.variableIncomes,
+            data: this.variableIncomes.slice(1),
             borderWidth: 6,
-            borderColor: '#0000FF',
-            backgroundColor: 'transparent'
+            borderColor: 'rgba(0, 0, 255)',
+            backgroundColor: 'rgba(0, 0, 255, 0.8)'
           }
         ],
         options: {
           responsive: true,
-          maintainAspectRatio: false,
-          title: {
-            fontSize: 20,
-            text: 'Relatorio'
-          },
-          labels: {
-            fontStyle: 'bold'
-          }
+          maintainAspectRatio: false
         }
       }
     });
