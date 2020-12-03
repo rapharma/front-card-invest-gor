@@ -1,15 +1,26 @@
-## Install
+## Instalação
 
-To install dependencies run `npm i`
+Para rodar o projeto digite `npm i`.
 
-## Open
+## Inicialização
 
-To initialize the project run `npm start` and navigate to `http://localhost:4200/`
+Para inicializar digite `ng serve --open`.
 
-## Build
+## Ambientes
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+BaseUrl Local: http://localhost:8080
+BaseUrl Heroku: https://front-investment-gor.herokuapp.com
 
-## Running unit tests
+Obs: a partir do momento que abrir o projeto já está com o usuário logado.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Teste unitários
+
+Digite `npm run test` para executá-los
+
+## Versão futura
+
+UI de cadastro e login
+
+## Back
+
+https://github.com/rapharma/api-card-invest-gor
