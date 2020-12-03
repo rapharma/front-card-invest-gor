@@ -35,9 +35,11 @@ export class InvestmentsService implements OnInit {
 
 
     this.shareData.currentToken.subscribe(tok => {
+      console.log('tok share', tok)
       if (tok) {
-        console.log('tok share', tok);
+        console.log('tok inside true', tok);
       } else {
+
         // this.router.navigate(['/investments']);
       }
     });
