@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input, NgZone, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -40,7 +40,7 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   shareDataSubscription = new Subscription();
   addDataSubscription = new Subscription();
   updateDataSubscription = new Subscription();
-  @Output() inserted = new EventEmitter<boolean>();
+  @Output() inserted = new EventEmitter();
   hello = 'Hello';
   userLogged = this.getUsername();
 
@@ -51,7 +51,6 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private service: InvestmentsService,
     private shareData: ShareDataService,
-    private ngZone: NgZone,
     private helperService: HelperService,
   ) {
     this.investment = new Investment();
@@ -107,6 +106,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
         this.investment.type = prod.type;
         this.investment.value = prod.value;
         this.investment.date = this.helperService.formatDateGet(prod.date);
+      } else {
+        this.router.navigate(['/investments']);
       }
     });
   }
@@ -130,7 +131,7 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     this.addDataSubscription = this.service.addInvestment(investBody).subscribe(
       (res: Investment[]) => {
         this.resetFields();
-        this.ngZone.run(() => this.inserted.emit(true));
+        this.inserted.emit();
         this.successMessage = MESSAGES.successAdd;
         setTimeout(() => { this.successMessage = ''; }, 2000);
       },

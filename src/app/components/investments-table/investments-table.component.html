@@ -1,13 +1,15 @@
-<app-investment-form (inserted)="listInvestments()">
+<span class="feedback-message error" *ngIf="errorLogin">{{loginMessageError}}</span>
+
+<app-investment-form (inserted)="listInvestments()" *ngIf="!errorLogin">
 </app-investment-form>
 
 <div class="investments-table" *ngIf="showTable">
     <h3>Your investments</h3>
     <hr>
 
-<span class="error-message" *ngIf="tableMessageError.length > 0">{{tableMessageError}}</span>
+<span class="feedback-message error" *ngIf="errorLogin">{{tableMessageError}}</span>
 
-<table class="table table-bordered sortable" *ngIf="tableMessageError.length == 0">
+<table class="table table-bordered sortable" *ngIf="!errorLogin">
       <thead>
     <tr>
       <th class="text-center">Type</th>
@@ -33,7 +35,7 @@
       </td>
     </tr>
     <tr *ngIf="investments.length == 0">
-      <td class="warning-message" colspan="4">{{noDataMessage}}</td>
+      <td class="feedback-message" colspan="4">{{noDataMessage}}</td>
     </tr>
   </tbody>
   </table>

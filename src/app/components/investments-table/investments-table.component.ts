@@ -14,9 +14,10 @@ import { UserService } from '../../services/user.service';
 const EMPTY = '';
 
 const enum MESSAGES {
+  loginMessageError = 'There was a problem with base connection, try to refresh the page',
   noData = 'There are no investments for while',
-  failedList = 'List investments failed',
-  failedDelete = 'Delete investment failed'
+  failedList = 'List investments failed, try refresh the page',
+  failedDelete = 'Delete investment failed, try refresh the page'
 }
 
 @Component({
@@ -30,11 +31,14 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   investment: Investment;
   user: User;
 
-  tableMessageError: string;
-  showTable: boolean;
-  noDataMessage: string;
   token: string;
   userLogged: string;
+  showTable: boolean;
+  errorLogin: boolean;
+
+  tableMessageError: string;
+  loginMessageError: string;
+  noDataMessage: string;
 
   getSubscription = new Subscription();
   deleteSubscription = new Subscription();
@@ -50,6 +54,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     this.investment = new Investment();
     this.showTable = true;
     this.tableMessageError = '';
+    this.loginMessageError = '';
     this.noDataMessage = MESSAGES.noData;
   }
 
@@ -60,6 +65,8 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.errorLogin = this.loginMessageError.length > 0;
+
     this.initializeUser();
 
     this.registerUser();
@@ -67,7 +74,6 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   }
 
   listInvestments() {
-    this.showTable = true;
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
         this.tableMessageError = '';
@@ -123,8 +129,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   private registerUser() {
     this.regiterSubscription = this.userService.registerUser(this.user).subscribe(
       (res) => {
-        console.log('res.user');
-        console.log(res.user);
+        this.loginMessageError = '';
         const userBody = new User();
         userBody.name = this.user.name;
         userBody.email = this.user.email;
@@ -132,7 +137,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
         this.authentUser(userBody, res.user);
       },
       (error) => {
-
+        this.loginMessageError = MESSAGES.loginMessageError;
       }
     );
   }
@@ -140,6 +145,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   private authentUser(userBody, responseUsername) {
     this.authenticateSubscription = this.userService.authenticateUser(userBody).subscribe(
       (res) => {
+        this.loginMessageError = '';
         this.token = res.token;
         sessionStorage.clear();
         sessionStorage.setItem('token', this.token);
@@ -147,9 +153,11 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
         this.listInvestments();
       },
       (error) => {
-        // this.errorMessage = MESSAGES.failedAdd;
+        this.loginMessageError = MESSAGES.loginMessageError;
+
       }
     );
   }
+
 
 }

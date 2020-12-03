@@ -6,10 +6,11 @@ import { InvestmentsTableComponent } from './components/investments-table/invest
 import { ChartComponent } from './components/chart/chart.component';
 
 const appRoutes: Routes = [
-  { path: '' || 'investments', component: InvestmentsTableComponent },
+  { path: 'investments', component: InvestmentsTableComponent },
   { path: 'investments/:update', component: InvestmentFormComponent },
   { path: 'chart', component: ChartComponent },
   { path: 'not-found', component: NotFoundComponent },
+  { path: '',  redirectTo: 'investments', pathMatch: 'full' },
   { path: '**', redirectTo: '/not-found' }
 ];
 
