@@ -44,6 +44,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   regiterSubscription = new Subscription();
   authenticateSubscription = new Subscription();
 
+
   constructor(private service: InvestmentsService,
     private shareData: ShareDataService,
     private helperService: HelperService,
@@ -73,7 +74,8 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   }
 
   listInvestments() {
-    this.getSubscription = this.service.getInvestments().subscribe(
+    this.token = this.getToken();
+    this.getSubscription = this.service.getInvestments(this.token).subscribe(
       (res) => {
         this.tableMessageError = '';
         this.investments = [];
@@ -159,5 +161,8 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     );
   }
 
+  getToken(): string {
+    return sessionStorage.getItem('token') !== undefined ? sessionStorage.getItem('token') : '';
+  }
 
 }

@@ -25,49 +25,36 @@ export class InvestmentsService implements OnInit {
   private shareData: ShareDataService) {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
-    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzgwMzlkZjg0YzU0MDAwNDljZGQ5YSIsImlhdCI6MTYwNjk1NTk4MiwiZXhwIjoxNjA3MDQyMzgyfQ.vzw89rL3YnSo8XDHLCMaChBRbnNBs9zmzwjsXCL2O5s';
-    this.headers.append('Content-Type', 'application/json');
-    this.headers.append('Authorization', `Bearer ${this.token}`);
-
+    this.token = '';
    }
 
-   ngOnInit () {
-
-
-    this.shareData.currentToken.subscribe(tok => {
-      console.log('tok share', tok)
-      if (tok) {
-        console.log('tok inside true', tok);
-      } else {
-
-        // this.router.navigate(['/investments']);
-      }
-    });
-
-   }
-
-  getInvestments(): Observable<Investment[]> {
+  getInvestments(token): Observable<Investment[]> {
+    console.log('get token', this.token);
+    this.inserHeader(token);
     return this.http
       .get(`${this.baseUrl}${this.mainUrl}`, { headers: this.headers })
       .map((response: Response) => response.json())
       .catch(this.handleError);
   }
 
-  addInvestment(investment: Investment): Observable<Investment[]> {
+  addInvestment(investment: Investment, token): Observable<Investment[]> {
+    this.inserHeader(token);
     return this.http
       .post(`${this.baseUrl}${this.mainUrl}`, investment, { headers: this.headers })
       .map((response: Response) => response.json())
       .catch(this.handleError);
   }
 
-  updateInvestment(investment: Investment, id: string): Observable<Investment[]> {
+  updateInvestment(investment: Investment, id: string, token): Observable<Investment[]> {
+    this.inserHeader(token);
     return this.http
       .put(`${this.baseUrl}${this.mainUrl}/${id}`, investment, { headers: this.headers })
       .map((response: Response) => response.json())
       .catch(this.handleError);
   }
 
-  deleteInvestment(id: string): Observable<Investment[]> {
+  deleteInvestment(id: string, token): Observable<Investment[]> {
+    this.inserHeader(token);
     return this.http
       .delete(`${this.baseUrl}${this.mainUrl}/${id}`, { headers: this.headers })
       .map((response: Response) => response.json())
@@ -76,5 +63,10 @@ export class InvestmentsService implements OnInit {
 
   private handleError(errorResponse) {
     return Observable.throw(errorResponse.error);
+  }
+
+  private inserHeader(token) {
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Authorization', `Bearer ${this.token}`);
   }
 }

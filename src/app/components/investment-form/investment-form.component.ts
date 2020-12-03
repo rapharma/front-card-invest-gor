@@ -41,6 +41,7 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   updateDataSubscription = new Subscription();
   @Output() inserted = new EventEmitter();
   hello = 'Hello';
+  token = this.getToken();
   userLogged = this.getUsername();
 
   @ViewChild('f') investForm: NgForm;
@@ -65,6 +66,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    console.log('form token', this.token);
 
     this.mask = this.helperService.getDateMask();
 
@@ -120,14 +123,14 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     investBody.date = dateFormat;
 
     if (!this.editData) {
-      this.addInvestment(investBody);
+      this.addInvestment(investBody, this.token);
     } else {
-      this.updateInvestment(investBody, idInvestment)
+      this.updateInvestment(investBody, idInvestment, this.token);
     }
   }
 
-  private addInvestment(investBody) {
-    this.addDataSubscription = this.service.addInvestment(investBody).subscribe(
+  private addInvestment(investBody, token) {
+    this.addDataSubscription = this.service.addInvestment(investBody, token).subscribe(
       (res: Investment[]) => {
         this.resetFields();
         this.inserted.emit();
@@ -145,8 +148,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     return sessionStorage.getItem('username') !== undefined ? sessionStorage.getItem('username') : '';
   }
 
-  private updateInvestment(investBody, idInvestment) {
-    this.updateDataSubscription = this.service.updateInvestment(investBody, idInvestment).subscribe(
+  private updateInvestment(investBody, idInvestment, token) {
+    this.updateDataSubscription = this.service.updateInvestment(investBody, idInvestment, token).subscribe(
       (res: Investment[]) => {
         this.router.navigate(['/investments']);
       },
@@ -159,6 +162,10 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   resetFields() {
     this.investForm.reset();
     this.investment.type = undefined;
+  }
+
+  getToken(): string {
+    return sessionStorage.getItem('token') !== undefined ? sessionStorage.getItem('token') : '';
   }
 
 }
