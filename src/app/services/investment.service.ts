@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { Investment } from '../models/investment';
 import { Subscription } from 'rxjs/Subscription';
+import { StorageService } from './storage.service';
 
 enum ROUTE {
   baseUrl = 'https://api-card-invest-gor.herokuapp.com',
@@ -18,13 +19,16 @@ export class InvestmentsService {
   private mainUrl = '';
   private investments: Investment[] = [];
   private token: string;
+  private tok: string;
   private headers = new Headers();
 
-  constructor(private http: Http) {
+  constructor(private http: Http,
+  private storage: StorageService) {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
     this.token = sessionStorage.getItem('token');
     console.log('tok invest service', this.token);
+    this.tok = this.storage.get('tok';)
    }
 
   getInvestments(token): Observable<Investment[]> {

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { StorageService } from '../../services/storage.service';
 
 const EMPTY = '';
 
@@ -49,7 +50,8 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     private shareData: ShareDataService,
     private helperService: HelperService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private storage: StorageService
   ) {
     this.investment = new Investment();
     this.showTable = true;
@@ -153,6 +155,8 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
         sessionStorage.clear();
         sessionStorage.setItem('token', this.token);
         sessionStorage.setItem('username', responseUsername);
+        this.storage.remove('tok');
+        this.storage.set('tok', res.token);
         this.shareData.sendToken(this.token);
         this.listInvestments();
       },
