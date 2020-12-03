@@ -39,9 +39,11 @@ export class ChartComponent implements OnInit {
 
     setTimeout(() => { this.loadingMessage = ''}, 1000);
 
+    this.initializeChart();
+
   }
 
-  private listInvestments() {
+  private initializeChart() {
     enum typeInv {
       title = 'Fixed Income'
     }
