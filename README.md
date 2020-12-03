@@ -6,12 +6,15 @@ Para rodar o projeto digite `npm i`.
 
 Para inicializar digite `ng serve --open`.
 
+Local: http://localhost:8080
+Heroku: https://front-investment-gor.herokuapp.com
+
 Obs: a partir do momento que abrir o projeto já está com o usuário logado.
 
 ## Teste unitários
 
-Run `npm run test` to execute the unit tests.
+Digite `npm run test` para executá-los
 
 ## Versão futura
 
-Tela de cadastro e login
+UI de cadastro e login
