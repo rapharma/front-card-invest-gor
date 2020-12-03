@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { ShareDataService } from '../../services/share-data.service';
 import { HelperService } from '../../services/helper.service';
 import { Subscription } from 'rxjs';
+import { StorageServ } from '../../services/storage.service';
 
 const enum MESSAGES {
   successAdd = 'Investment added with success',
@@ -52,12 +53,12 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     private service: InvestmentsService,
     private shareData: ShareDataService,
     private helperService: HelperService,
+    private storage: StorageServ
   ) {
     this.investment = new Investment();
     this.investmentsTypes = [];
     this.addTitle = 'Add an investment';
     this.editTitle = 'Edit this investment';
-    this.token = '';
     this.userLogged = '';
   }
 
@@ -69,8 +70,7 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.userLogged = this.getUsername();
-    this.token = this.getToken();
+    this.userLogged = this.storage.get('user');
 
     this.mask = this.helperService.getDateMask();
 
@@ -133,7 +133,7 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   }
 
   private addInvestment(investBody, token) {
-    this.addDataSubscription = this.service.addInvestment(investBody, token).subscribe(
+    this.addDataSubscription = this.service.addInvestment(investBody).subscribe(
       (res: Investment[]) => {
         this.resetFields();
         this.inserted.emit();
@@ -147,12 +147,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  getUsername(): string {
-    return sessionStorage.getItem('username') !== undefined ? sessionStorage.getItem('username') : '';
-  }
-
   private updateInvestment(investBody, idInvestment, token) {
-    this.updateDataSubscription = this.service.updateInvestment(investBody, idInvestment, token).subscribe(
+    this.updateDataSubscription = this.service.updateInvestment(investBody, idInvestment).subscribe(
       (res: Investment[]) => {
         this.router.navigate(['/investments']);
       },
@@ -165,10 +161,6 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   resetFields() {
     this.investForm.reset();
     this.investment.type = undefined;
-  }
-
-  getToken(): string {
-    return sessionStorage.getItem('token') !== undefined ? sessionStorage.getItem('token') : '';
   }
 
 }

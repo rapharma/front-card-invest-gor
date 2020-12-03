@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
-import { StorageService } from '../../services/storage.service';
+import { StorageServ } from '../../services/storage.service';
 
 const EMPTY = '';
 
@@ -51,7 +51,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     private helperService: HelperService,
     private router: Router,
     private userService: UserService,
-    private storage: StorageService
+    private storage: StorageServ
   ) {
     this.investment = new Investment();
     this.showTable = true;
@@ -78,7 +78,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
 
   listInvestments() {
     this.token = sessionStorage['token'];
-    this.getSubscription = this.service.getInvestments(this.token).subscribe(
+    this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
         this.tableMessageError = '';
         this.investments = [];
@@ -111,7 +111,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   onDelete(investmentId) {
     this.token = this.getToken();
     if (confirm('Are you sure you want to delete?')) {
-      this.deleteSubscription = this.service.deleteInvestment(investmentId, this.token).subscribe(
+      this.deleteSubscription = this.service.deleteInvestment(investmentId).subscribe(
         () => {
           this.investments = this.investments.filter(
             product => product._id !== investmentId
@@ -152,12 +152,10 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
       (res) => {
         this.loginMessageError = '';
         this.token = res.token;
-        sessionStorage.clear();
-        sessionStorage.setItem('token', this.token);
-        sessionStorage.setItem('username', responseUsername);
         this.storage.remove('tok');
+        this.storage.remove('user');
         this.storage.set('tok', res.token);
-        this.shareData.sendToken(this.token);
+        this.storage.set('user', responseUsername);
         this.listInvestments();
       },
       (error) => {

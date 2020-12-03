@@ -18,7 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { UserService } from './services/user.service';
 import { ChartComponent } from './components/chart/chart.component';
 import { ChartService } from './services/chart.service';
-import { StorageService } from './services/storage.service';
+import { StorageServ } from './services/storage.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { StorageService } from './services/storage.service';
     HttpModule,
     TextMaskModule
   ],
-  providers: [InvestmentsService, ShareDataService, HelperService, UserService, ChartService, StorageService],
+  providers: [InvestmentsService, ShareDataService, HelperService, UserService, ChartService, StorageServ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

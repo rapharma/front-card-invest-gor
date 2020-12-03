@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../../services/user.service';
+import { StorageServ } from '../../services/storage.service';
 
 describe('InvestmentsTableComponent', () => {
 
@@ -24,6 +25,7 @@ describe('InvestmentsTableComponent', () => {
   let router: Router;
   let userServ: UserService;
   let userService: UserService;
+  let storage: StorageServ;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -31,7 +33,7 @@ describe('InvestmentsTableComponent', () => {
       imports: [FormsModule, HttpModule, RouterTestingModule],
       providers: [InvestmentsService, , helperService, ShareDataService]
     });
-    component = new InvestmentsTableComponent(service, shareDataServ, helperService, router, userService);
+    component = new InvestmentsTableComponent(service, shareDataServ, helperService, router, userService, storage);
   });
 
   it('should create InvestmentTable', () => {

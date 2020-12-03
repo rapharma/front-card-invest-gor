@@ -28,10 +28,9 @@ export class ChartComponent implements OnInit {
 
   @ViewChild('mychart') mychart;
 
-
   constructor(private service: InvestmentsService,
-    private helperService: HelperService,
-    private shareData: ShareDataService) {
+    private helperService: HelperService
+  ) {
       this.loadingMessage = 'Loading chart...';
       this.token = '';
   }
@@ -40,15 +39,13 @@ export class ChartComponent implements OnInit {
 
     setTimeout(() => { this.loadingMessage = ''}, 1000);
 
-    this.getToken();
-
   }
 
   private listInvestments() {
     enum typeInv {
       title = 'Fixed Income'
     }
-    this.getSubscription = this.service.getInvestments(this.token).subscribe(
+    this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
         this.chartMessageError = '';
         res['investments']
@@ -112,13 +109,4 @@ export class ChartComponent implements OnInit {
 
   }
 
-  getToken() {
-    this.shareData.currentToken.subscribe(tok => {
-      if (tok) {
-       this.listInvestments();
-      } else {
-        this.chartMessageError = MESSAGES.failedChart;
-      }
-    });
-  }
 }
