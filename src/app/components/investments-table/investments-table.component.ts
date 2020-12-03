@@ -75,7 +75,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   }
 
   listInvestments() {
-    this.token = this.getToken();
+    this.token = sessionStorage['token'];
     this.getSubscription = this.service.getInvestments(this.token).subscribe(
       (res) => {
         this.tableMessageError = '';
