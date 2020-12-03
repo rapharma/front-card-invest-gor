@@ -58,16 +58,12 @@ export class ChartComponent implements OnInit {
 
         });
 
-        console.log(this.variableIncomes);
-
-
         this.datesAux.sort((a: any, b: any) => a - b);
 
         this.datesAux.map(d => {
           this.dates.push(this.helperService.formatDateChart(d.toLocaleDateString()));
         });
 
-        console.log('sorted', this.dates);
         this.createChart();
       },
       (error) => {
