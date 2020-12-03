@@ -27,12 +27,13 @@ export class InvestmentsService {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
     this.token = sessionStorage.getItem('token');
-    console.log('tok invest service', this.token);
+    console.log('tok invest service', sessionStorage.getItem('token'));
     this.tok = this.storage.get('tok');
+    console.log('tok serv', this.tok);
    }
 
   getInvestments(token): Observable<Investment[]> {
-    console.log('get token', this.token);
+
     this.inserHeader(this.token);
     return this.http
       .get(`${this.baseUrl}${this.mainUrl}`, { headers: this.headers })
