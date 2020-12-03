@@ -3,6 +3,11 @@ import { Chart } from 'chart.js';
 import { Subscription } from 'rxjs/Subscription';
 import { InvestmentsService } from '../../services/investment.service';
 import { HelperService } from '../../services/helper.service';
+import { ShareDataService } from '../../services/share-data.service';
+
+const enum MESSAGES {
+  failedChart = 'Failed to load chart',
+}
 
 enum MESSAGE {
   failedChart = 'Chart unavailable'
@@ -21,26 +26,28 @@ export class ChartComponent implements OnInit {
   variableIncomes =  [{x: '', y: ''}];
   datesAux = Array<Date>();
   dates = Array<string>();
-  loadingMessage: string;
   chartMessageError: string;
+  loadingMessage: string;
+  token: string;
 
   @ViewChild('mychart') mychart;
 
-
   constructor(private service: InvestmentsService,
-    private helperService: HelperService) {
+    private helperService: HelperService
+  ) {
       this.loadingMessage = 'Loading chart...';
-     }
+      this.token = '';
+  }
 
   ngOnInit() {
 
     setTimeout(() => { this.loadingMessage = ''}, 1000);
 
-    this.listInvestments();
+    this.initializeChart();
 
   }
 
-  private listInvestments() {
+  private initializeChart() {
     enum typeInv {
       title = 'Fixed Income'
     }
@@ -70,7 +77,11 @@ export class ChartComponent implements OnInit {
         this.createChart();
       },
       (error) => {
+<<<<<<< HEAD
         this.chartMessageError = MESSAGE.failedChart;
+=======
+        this.chartMessageError = MESSAGES.failedChart;
+>>>>>>> 70ed9aab37e16551842f226dbd51edd555694850
       }
     );
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 import { Investment } from '../../models/investment';
-import { InvestmentsService } from '../../services/investment.service';;
+import { InvestmentsService } from '../../services/investment.service';
 import * as moment from 'moment';
 import { ShareDataService } from '../../services/share-data.service';
 import { HelperService } from '../../services/helper.service';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { StorageServ } from '../../services/storage.service';
 
 const EMPTY = '';
 
@@ -44,17 +45,20 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   regiterSubscription = new Subscription();
   authenticateSubscription = new Subscription();
 
+
   constructor(private service: InvestmentsService,
     private shareData: ShareDataService,
     private helperService: HelperService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private storage: StorageServ
   ) {
     this.investment = new Investment();
     this.showTable = true;
     this.tableMessageError = '';
     this.loginMessageError = '';
     this.noDataMessage = MESSAGES.noData;
+    this.token = '';
   }
 
   ngOnDestroy() {
@@ -73,6 +77,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   }
 
   listInvestments() {
+    this.token = sessionStorage['token'];
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
         this.tableMessageError = '';
@@ -104,6 +109,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   }
 
   onDelete(investmentId) {
+    this.token = this.getToken();
     if (confirm('Are you sure you want to delete?')) {
       this.deleteSubscription = this.service.deleteInvestment(investmentId).subscribe(
         () => {
@@ -146,9 +152,10 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
       (res) => {
         this.loginMessageError = '';
         this.token = res.token;
-        sessionStorage.clear();
-        sessionStorage.setItem('token', this.token);
-        sessionStorage.setItem('username', responseUsername);
+        this.storage.remove('tok');
+        this.storage.remove('user');
+        this.storage.set('tok', res.token);
+        this.storage.set('user', responseUsername);
         this.listInvestments();
       },
       (error) => {
@@ -158,5 +165,8 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
     );
   }
 
+  getToken(): string {
+    return sessionStorage.getItem('token') !== undefined ? sessionStorage.getItem('token') : '';
+  }
 
 }

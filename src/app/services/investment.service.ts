@@ -6,32 +6,29 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
 import { Investment } from '../models/investment';
-import { ShareDataService } from './share-data.service';
 import { Subscription } from 'rxjs/Subscription';
+import { StorageServ } from './storage.service';
 
 enum ROUTE {
   baseUrl = 'https://api-card-invest-gor.herokuapp.com',
   main = '/card-invest/investment'
 }
 @Injectable()
-export class InvestmentsService implements OnInit {
+export class InvestmentsService {
   private baseUrl = '';
   private mainUrl = '';
   private investments: Investment[] = [];
-  private token = '';
+  private token: string;
+  private tok: string;
   private headers = new Headers();
 
-  constructor(private http: Http) {
+  constructor(private http: Http,
+    private storage: StorageServ) {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
-    this.token = sessionStorage.getItem('token');
-    this.headers.append('Content-Type', 'application/json');
-    this.headers.append('Authorization', `Bearer ${this.token}`);
-
-   }
-
-   ngOnInit () {
-   }
+    this.token = this.storage.get('tok');
+    this.inserHeader(this.token);
+  }
 
   getInvestments(): Observable<Investment[]> {
     return this.http
@@ -63,5 +60,10 @@ export class InvestmentsService implements OnInit {
 
   private handleError(errorResponse) {
     return Observable.throw(errorResponse.error);
+  }
+
+  private inserHeader(token) {
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Authorization', `Bearer ${this.token}`);
   }
 }
