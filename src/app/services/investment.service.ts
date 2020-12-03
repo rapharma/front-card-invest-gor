@@ -27,13 +27,15 @@ export class InvestmentsService implements OnInit {
     this.token = sessionStorage.getItem('token');
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Authorization', `Bearer ${this.token}`);
-
+    console.log('head',this.headers)
+    console.log('tok',this.token)
    }
 
    ngOnInit () {
    }
 
   getInvestments(): Observable<Investment[]> {
+    console.log('tok get',this.token)
     return this.http
       .get(`${this.baseUrl}${this.mainUrl}`, { headers: this.headers })
       .map((response: Response) => response.json())

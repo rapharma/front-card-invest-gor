@@ -4,6 +4,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { InvestmentsService } from '../../services/investment.service';
 import { HelperService } from '../../services/helper.service';
 
+const enum MESSAGES {
+  failedChart = 'Failed to load chart',
+}
+
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
@@ -17,8 +21,9 @@ export class ChartComponent implements OnInit {
   variableIncomes =  [{x: '', y: ''}];
   datesAux = Array<Date>();
   dates = Array<string>();
+  chartMessageError: string;
 
-  loadingMessage = '';
+  loadingMessage: string;
 
   @ViewChild('mychart') mychart;
 
@@ -42,6 +47,7 @@ export class ChartComponent implements OnInit {
     }
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
+        this.chartMessageError = '';
         res['investments']
         .map(investment => {
           investment.type === typeInv.title ? this.fixedIncomes.push({
@@ -51,8 +57,6 @@ export class ChartComponent implements OnInit {
             x: this.helperService.formatDateGet(investment.date),
             y: investment.value
           });
-
-
 
           this.datesAux.push(new Date(this.helperService.formatDateAuxChart(investment.date)));
 
@@ -67,7 +71,7 @@ export class ChartComponent implements OnInit {
         this.createChart();
       },
       (error) => {
-        // this.tableMessageError = MESSAGES.failedList;
+        this.chartMessageError = MESSAGES.failedChart;
       }
     );
   }
