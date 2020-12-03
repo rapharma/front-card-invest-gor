@@ -1,8 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 
 import { Investment } from '../../models/investment';
-import { InvestmentsService } from '../../services/investment.service';
-import { } from '../common/app-error';
+import { InvestmentsService } from '../../services/investment.service';;
 import * as moment from 'moment';
 import { ShareDataService } from '../../services/share-data.service';
 import { HelperService } from '../../services/helper.service';

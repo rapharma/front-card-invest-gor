@@ -1,7 +1,6 @@
 import { InvestmentsTableComponent } from './investments-table.component';
 import { InvestmentsService } from '../../services/investment.service';
 import { Investment } from '../../models/investment';
-import {  } from '../common/app-error';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/empty';

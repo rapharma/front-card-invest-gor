@@ -6,7 +6,6 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
 import { Investment } from '../models/investment';
-import {  } from '../common/app-error';
 import { User } from '../models/user';
 
 @Injectable()
