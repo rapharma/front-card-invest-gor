@@ -28,7 +28,7 @@ export class InvestmentsService {
     this.mainUrl = ROUTE.main;
     this.token = sessionStorage.getItem('token');
     console.log('tok invest service', this.token);
-    this.tok = this.storage.get('tok';)
+    this.tok = this.storage.get('tok');
    }
 
   getInvestments(token): Observable<Investment[]> {
