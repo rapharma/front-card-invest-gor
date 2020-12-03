@@ -14,7 +14,7 @@ enum ROUTE {
   main = '/card-invest/investment'
 }
 @Injectable()
-export class InvestmentsService implements OnInit {
+export class InvestmentsService {
   private baseUrl = '';
   private mainUrl = '';
   private investments: Investment[] = [];
