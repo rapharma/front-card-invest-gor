@@ -3,6 +3,7 @@ import { Chart } from 'chart.js';
 import { Subscription } from 'rxjs/Subscription';
 import { InvestmentsService } from '../../services/investment.service';
 import { HelperService } from '../../services/helper.service';
+import { ShareDataService } from '../../services/share-data.service';
 
 const enum MESSAGES {
   failedChart = 'Failed to load chart',
@@ -29,13 +30,23 @@ export class ChartComponent implements OnInit {
 
 
   constructor(private service: InvestmentsService,
-    private helperService: HelperService) {
+    private helperService: HelperService,
+    private shareData: ShareDataService) {
       this.loadingMessage = 'Loading chart...';
      }
 
   ngOnInit() {
 
     setTimeout(() => { this.loadingMessage = ''}, 1000);
+
+    this.shareData.currentToken.subscribe(tok => {
+      console.log('tok chart')
+      if (tok) {
+        console.log('tok chart inside true')
+      } else {
+        // this.router.navigate(['/investments']);
+      }
+    });
 
     this.listInvestments();
 
@@ -45,7 +56,7 @@ export class ChartComponent implements OnInit {
     enum typeInv {
       title = 'Fixed Income'
     }
-    this.getSubscription = this.service.getInvestments().subscribe(
+    this.getSubscription = this.service.getInvestments('').subscribe(
       (res) => {
         this.chartMessageError = '';
         res['investments']

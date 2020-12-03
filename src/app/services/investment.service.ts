@@ -6,7 +6,6 @@ import 'rxjs/add/observable/throw';
 import { Observable } from 'rxjs/Observable';
 
 import { Investment } from '../models/investment';
-import { ShareDataService } from './share-data.service';
 import { Subscription } from 'rxjs/Subscription';
 
 enum ROUTE {
@@ -21,8 +20,7 @@ export class InvestmentsService {
   private token = '';
   private headers = new Headers();
 
-  constructor(private http: Http,
-  private shareData: ShareDataService) {
+  constructor(private http: Http) {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
     this.token = '';
