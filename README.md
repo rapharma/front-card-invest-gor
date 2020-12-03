@@ -1,15 +1,17 @@
-## Install
+## Instalação
 
-To install dependencies run `npm i`
+Para rodar o projeto digite `npm i`.
 
-## Open
+## Inicialização
 
-To initialize the project run `npm start` and navigate to `http://localhost:4200/`
+Para inicializar digite `ng serve --open`.
 
-## Build
+Obs: a partir do momento que abrir o projeto já está com o usuário logado.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+## Teste unitários
 
-## Running unit tests
+Run `npm run test` to execute the unit tests.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Versão futura
+
+Tela de cadastro e login
