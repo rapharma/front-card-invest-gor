@@ -21,21 +21,30 @@ export class InvestmentsService implements OnInit {
   private token = '';
   private headers = new Headers();
 
-  constructor(private http: Http) {
+  constructor(private http: Http,
+  private shareData: ShareDataService) {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
     this.token = sessionStorage.getItem('token');
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Authorization', `Bearer ${this.token}`);
-    console.log('head',this.headers)
-    console.log('tok',this.token)
+
    }
 
    ngOnInit () {
+
+
+    this.shareData.currentToken.subscribe(tok => {
+      if (tok) {
+        console.log('tok share', tok)
+      } else {
+        // this.router.navigate(['/investments']);
+      }
+    });
+
    }
 
   getInvestments(): Observable<Investment[]> {
-    console.log('tok get',this.token)
     return this.http
       .get(`${this.baseUrl}${this.mainUrl}`, { headers: this.headers })
       .map((response: Response) => response.json())

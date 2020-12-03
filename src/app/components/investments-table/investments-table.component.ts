@@ -149,6 +149,7 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
         sessionStorage.clear();
         sessionStorage.setItem('token', this.token);
         sessionStorage.setItem('username', responseUsername);
+        this.shareData.sendToken(this.token);
         this.listInvestments();
       },
       (error) => {
