@@ -25,7 +25,7 @@ export class InvestmentsService implements OnInit {
   private shareData: ShareDataService) {
     this.baseUrl = ROUTE.baseUrl;
     this.mainUrl = ROUTE.main;
-    this.token = sessionStorage.getItem('token');
+    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzgwMzlkZjg0YzU0MDAwNDljZGQ5YSIsImlhdCI6MTYwNjk1NTk4MiwiZXhwIjoxNjA3MDQyMzgyfQ.vzw89rL3YnSo8XDHLCMaChBRbnNBs9zmzwjsXCL2O5s';
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Authorization', `Bearer ${this.token}`);
 
@@ -36,7 +36,7 @@ export class InvestmentsService implements OnInit {
 
     this.shareData.currentToken.subscribe(tok => {
       if (tok) {
-        console.log('tok share', tok)
+        console.log('tok share', tok);
       } else {
         // this.router.navigate(['/investments']);
       }
