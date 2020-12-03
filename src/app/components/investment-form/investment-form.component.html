@@ -14,9 +14,9 @@
             <option [ngValue]="undefined" disabled>Select type</option>
             <option *ngFor="let obj of investmentsTypes" [ngValue]="obj.value" [selected]="obj.value == investment.type"> {{obj.value}} </option>
           </select>
-          <div class="feedback-message error" *ngIf="editData ? (type.value == undefined && type.touched) : (type.value == undefined && type.touched) ">
+          <span class="feedback-message error" *ngIf="editData ? (type.value == undefined && type.touched) : (type.value == undefined && type.touched) ">
             Type is required.
-          </div>
+          </span>
         </div>
       </div>
 
@@ -25,9 +25,9 @@
           <label for="inputValue">Value</label>
           <input type="text" class="form-control"
             placeholder="99" id="inputValue" name="value" [ngModel]="investment.value" required #value="ngModel">
-          <div class="feedback-message error" *ngIf="value.invalid && value.touched">
+          <span class="feedback-message error" *ngIf="value.invalid && value.touched">
             Value is required.
-          </div>
+          </span>
         </div>
       </div>
 
@@ -35,9 +35,9 @@
         <div class="form-group">
           <label for="inputDate">Date </label>
           <input [textMask]="{mask: mask}" placeholder="99/99/9999" id="inputDate" type="text" name="date" [ngModel]="investment.date" required #date="ngModel" class="form-control">
-          <div class="feedback-message error" *ngIf="date.invalid && date.touched">
+          <span class="feedback-message error" *ngIf="date.invalid && date.touched">
               Date is required.
-            </div>
+            </span>
 
         </div>
 
@@ -54,12 +54,12 @@
       </div>
 
     </div>
-    <div class="row">
+    <span class="row">
         <span class="feedback-message success">{{successMessage}}</span>
-    </div>
-    <div class="row">
+    </span>
+    <span class="row">
         <span class="feedback-message error">{{errorMessage}}</span>
-    </div>
+    </span>
   </form>
 </div>
 </div>

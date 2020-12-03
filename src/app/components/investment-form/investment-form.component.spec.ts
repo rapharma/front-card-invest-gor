@@ -13,6 +13,7 @@ import { HelperService } from '../../services/helper.service';
 import { NgZone } from '@angular/core/src/zone/ng_zone';
 import { ActivatedRoute } from '@angular/router/src/router_state';
 import { Router } from '@angular/router';
+import { StorageServ } from '../../services/storage.service';
 
 describe('InvestmentFormComponent', () => {
   let component: InvestmentFormComponent;
@@ -22,6 +23,7 @@ describe('InvestmentFormComponent', () => {
   let helperService: HelperService;
   let route: ActivatedRoute;
   let router: Router;
+  let storage: StorageServ;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -30,7 +32,7 @@ describe('InvestmentFormComponent', () => {
       providers: [InvestmentsService, ShareDataService, HelperService]
     });
 
-    component = new InvestmentFormComponent(route, router, service, shareDataServ, helperService);
+    component = new InvestmentFormComponent(route, router, service, shareDataServ, helperService, storage);
 
   });
 

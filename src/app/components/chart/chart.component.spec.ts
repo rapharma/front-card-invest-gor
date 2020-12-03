@@ -4,8 +4,8 @@ import { ChartComponent } from './chart.component';
 import { HttpModule } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { InvestmentsService } from '../../services/investment.service';
-import { ShareDataService } from '../../services/share-data.service';
 import { HelperService } from '../../services/helper.service';
+import { StorageServ } from '../../services/storage.service';
 
 describe('ChartComponent', () => {
   let component: ChartComponent;
@@ -18,7 +18,7 @@ describe('ChartComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ ChartComponent ],
       imports: [HttpModule, RouterTestingModule],
-      providers: [InvestmentsService, ShareDataService, HelperService]
+      providers: [InvestmentsService, HelperService, StorageServ]
     })
     .compileComponents();
   }));
@@ -29,7 +29,7 @@ describe('ChartComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create chart', () => {
     expect(component).toBeTruthy();
   });
 });

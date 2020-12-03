@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { ShareDataService } from '../../services/share-data.service';
 import { HelperService } from '../../services/helper.service';
 import { Subscription } from 'rxjs';
+import { StorageServ } from '../../services/storage.service';
 
 const enum MESSAGES {
   successAdd = 'Investment added with success',
@@ -41,7 +42,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   updateDataSubscription = new Subscription();
   @Output() inserted = new EventEmitter();
   hello = 'Hello';
-  userLogged = this.getUsername();
+  token: string;
+  userLogged: string;
 
   @ViewChild('f') investForm: NgForm;
 
@@ -51,11 +53,13 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     private service: InvestmentsService,
     private shareData: ShareDataService,
     private helperService: HelperService,
+    private storage: StorageServ
   ) {
     this.investment = new Investment();
     this.investmentsTypes = [];
     this.addTitle = 'Add an investment';
     this.editTitle = 'Edit this investment';
+    this.userLogged = '';
   }
 
   ngOnDestroy() {
@@ -65,6 +69,8 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.userLogged = this.storage.get('user');
 
     this.mask = this.helperService.getDateMask();
 
@@ -120,13 +126,13 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     investBody.date = dateFormat;
 
     if (!this.editData) {
-      this.addInvestment(investBody);
+      this.addInvestment(investBody, this.token);
     } else {
-      this.updateInvestment(investBody, idInvestment)
+      this.updateInvestment(investBody, idInvestment, this.token);
     }
   }
 
-  private addInvestment(investBody) {
+  private addInvestment(investBody, token) {
     this.addDataSubscription = this.service.addInvestment(investBody).subscribe(
       (res: Investment[]) => {
         this.resetFields();
@@ -141,11 +147,7 @@ export class InvestmentFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  getUsername(): string {
-    return sessionStorage.getItem('username') !== undefined ? sessionStorage.getItem('username') : '';
-  }
-
-  private updateInvestment(investBody, idInvestment) {
+  private updateInvestment(investBody, idInvestment, token) {
     this.updateDataSubscription = this.service.updateInvestment(investBody, idInvestment).subscribe(
       (res: Investment[]) => {
         this.router.navigate(['/investments']);

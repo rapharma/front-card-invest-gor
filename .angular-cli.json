@@ -16,11 +16,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "../node_modules/bootstrap/dist/css/bootstrap.css",
-        "app/scripts/sortable.css"
+        "../node_modules/bootstrap/dist/css/bootstrap.css"
       ],
       "scripts": [
-        "app/scripts/sortable.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

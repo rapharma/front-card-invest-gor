@@ -3,6 +3,11 @@ import { Chart } from 'chart.js';
 import { Subscription } from 'rxjs/Subscription';
 import { InvestmentsService } from '../../services/investment.service';
 import { HelperService } from '../../services/helper.service';
+import { ShareDataService } from '../../services/share-data.service';
+
+const enum MESSAGES {
+  failedChart = 'Failed to load chart',
+}
 
 @Component({
   selector: 'app-chart',
@@ -17,31 +22,34 @@ export class ChartComponent implements OnInit {
   variableIncomes =  [{x: '', y: ''}];
   datesAux = Array<Date>();
   dates = Array<string>();
-
-  loadingMessage = '';
+  chartMessageError: string;
+  loadingMessage: string;
+  token: string;
 
   @ViewChild('mychart') mychart;
 
-
   constructor(private service: InvestmentsService,
-    private helperService: HelperService) {
+    private helperService: HelperService
+  ) {
       this.loadingMessage = 'Loading chart...';
-     }
+      this.token = '';
+  }
 
   ngOnInit() {
 
     setTimeout(() => { this.loadingMessage = ''}, 1000);
 
-    this.listInvestments();
+    this.initializeChart();
 
   }
 
-  private listInvestments() {
+  private initializeChart() {
     enum typeInv {
       title = 'Fixed Income'
     }
     this.getSubscription = this.service.getInvestments().subscribe(
       (res) => {
+        this.chartMessageError = '';
         res['investments']
         .map(investment => {
           investment.type === typeInv.title ? this.fixedIncomes.push({
@@ -52,14 +60,9 @@ export class ChartComponent implements OnInit {
             y: investment.value
           });
 
-
-
           this.datesAux.push(new Date(this.helperService.formatDateAuxChart(investment.date)));
 
         });
-
-        console.log(this.variableIncomes);
-
 
         this.datesAux.sort((a: any, b: any) => a - b);
 
@@ -67,11 +70,10 @@ export class ChartComponent implements OnInit {
           this.dates.push(this.helperService.formatDateChart(d.toLocaleDateString()));
         });
 
-        console.log('sorted', this.dates);
         this.createChart();
       },
       (error) => {
-        // this.tableMessageError = MESSAGES.failedList;
+        this.chartMessageError = MESSAGES.failedChart;
       }
     );
   }
