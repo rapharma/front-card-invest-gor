@@ -106,8 +106,9 @@ export class InvestmentsTableComponent implements OnInit, OnDestroy {
   }
 
   onDelete(investmentId) {
+    this.token = this.getToken();
     if (confirm('Are you sure you want to delete?')) {
-      this.deleteSubscription = this.service.deleteInvestment(investmentId).subscribe(
+      this.deleteSubscription = this.service.deleteInvestment(investmentId, this.token).subscribe(
         () => {
           this.investments = this.investments.filter(
             product => product._id !== investmentId
